@@ -5,12 +5,11 @@ var getPixels = require("get-pixels");
 var ndarray = require("ndarray");
 
 var img;
-var cells = [];
+var map = [];
 
 app.use(myParser.json())
 
 app.post('/', (req, res) => {
-
     res.setHeader('Content-Type', 'application/json');
     getPixels(req.body.url, function(err, pixels){
         if (err){
@@ -19,21 +18,22 @@ app.post('/', (req, res) => {
         } else {
             console.log(pixels.shape.slice());
             img = pixels;
-            genMap(req.body.width);
-            res.send(JSON.stringify({data:cells}))
+            map = [];
+            var s = (img.shape[0]-(img.shape[0]%req.body.width))/req.body.width;
+            var c = img.lo(img.shape[0]%req.body.width,img.shape[1]%s,img.shape[2]);
+            genMap(s,c);
+            res.send(JSON.stringify({data:map}))
         }
     });
 })
 
-function genMap(w) {
-    var s = (img.shape[0]-(img.shape[0]%w))/w;
-    var c = img.lo(img.shape[0]%w,img.shape[1]%s,4);
+function genMap(s,c) {
     var working;
     for (var i = 0; i < c.shape[0]; i+=s) {
         var arr = [];
         for (var j = 0; j < c.shape[1]; j+=s) {
-            var obj = {};
-            for (var k = 0; k < 4; k++) {
+            var p = {};
+            for (var k = 0; k < img.shape[2]; k++) {
                 working = c.lo(i,j,k).hi(s,s,1);
                 var avg = 0;
                 for (var a = 0; a < s-1; a++) {
@@ -44,27 +44,25 @@ function genMap(w) {
                 avg = parseInt(avg/((s-1)*(s-1)));
                 switch (k) {
                     case 0:
-                        obj.r = avg;
+                        p.r = avg;
                         break;
                     case 1:
-                        obj.g = avg;
+                        p.g = avg;
                         break;
                     case 2:
-                        obj.b = avg;
+                        p.b = avg;
                         break;
                     case 3:
-                        obj.a = avg;
+                        p.a = avg;
                         break;
                     default:
                         break;
                 }
             }
-            arr.push(obj);
+            arr.push(p);
         }
-        cells.push(arr);
+        map.push(arr);
     }
-    cells.x = c.shape[0];
-    cells.y = c.shape[1];
 }
 
 app.listen(8080, () => console.log('listening on port 8080'))
