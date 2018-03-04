@@ -12,8 +12,9 @@ app.use(myParser.json())
 app.post('/', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     getPixels(req.body.url, function(err, pixels){
-        if (err){
+        if (err || req.body.width <= 0 || req.body.width > (pixels.shape[1]/10)){
             console.log(err);
+            res.send(JSON.stringify({error:err}))
             return;
         } else {
             console.log(pixels.shape.slice());
