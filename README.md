@@ -26,3 +26,9 @@ The app is separated into a frontend Google Sheets addon and a backend webservic
 ### Using
 
 To use PixelSheet the files in the [addon](addon/) folder need to be attached to a Google AppsScript project associated with your Google Account. For details on how to do this see [here](https://developers.google.com/apps-script/overview). Then you can enable it on your account and use it with any Google Sheet.
+
+<p align="center">
+   <img src="assets/image-size.png" height="400" alt="Example 1"/> 
+   <img src="assets/happy.png" height="400" alt="Example 2"/> 
+   <img src="assets/sheets-logo.png" height="400" alt="Example 3"/> 
+</p>
