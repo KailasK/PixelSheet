@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <style>
+    ul.collapsible:hover {
+      box-shadow: 0 0 10px 2px grey;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <ul class="collapsible" style="transition-duration: 0.3s" data-collapsible="accordion">
+      <li>
+        <div class="collapsible-header active"><i class="material-icons">image</i>Set Image Source</div>
+        <div class="collapsible-body">
+          <div class="input-field">
+            <input id="url" type="text" class="validate">
+            <label for="url">URL</label>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header"><i class="material-icons">photo_size_select_large</i>Set Image Size</div>
+        <div class="collapsible-body">
+          <div class="input-field">
+            <input id="width" type="number" value="50" class="validate">
+            <label for="width">Number of columns</label>
+          </div>
+          <div class="input-field">
+            <input id="size" value="25" type="number" class="validate">
+            <label for="size">Width of columns</label>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header"><i class="material-icons">grid_on</i>Set Grid Offset</div>
+        <div class="collapsible-body">
+          <div class="input-field">
+            <input id="offx" value="0" type="number" class="validate" />
+            <label for="offx">Column Offset</label>
+          </div>
+          <div class="input-field">
+            <input id="offy" value="0" type="number" class="validate" />
+            <label for="offy">Row Offset</label>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <a class="waves-effect waves-light btn" id="submit" style="margin:auto;display:block;margin:5px;">Generate</a>
+    <p id="error" style="color:red;text-align:center;display:none;">Error</p>
+    <div id="loading" class="preloader-wrapper small active" style="margin:25px auto;display:none;">
+      <div class="spinner-layer spinner-blue">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-red">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-yellow">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-green">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+</body>
+<script>
+  var submit = document.getElementById("submit");
+  var load = document.getElementById("loading");
+  var error = document.getElementById("error");
+  submit.addEventListener("click", function () {
+    error.style.display = "none";
+    load.style.display = "block";
+    google.script.run
+      .withSuccessHandler(function () { load.style.display = "none" })
+      .withFailureHandler(function (e) { load.style.display = "none"; error.style.display = "block"; error.innerHTML = "Error: " + e })
+      .getData(document.getElementById("url").value, document.getElementById("width").value, document.getElementById("offy").value, document.getElementById("offx").value, document.getElementById("size").value)
+  });
+
+
+</script>
+
+</html>
